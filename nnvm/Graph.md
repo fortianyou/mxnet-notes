@@ -16,6 +16,11 @@ class Graph {
 `IndexedGraph`
 -----
 : 通过DFS遍历[`Graph`](#graph).outputs构建.
++ `entry_rptr_`: CSR pointer of node entries
+  
+  `entry_rptr_.push_back(entry_rptr_.back() + node.num_outputs()) ` 
++ `input_entrys_`: 保存所有[`Node`](#node)的所有输入项, 一个项的唯一标志是`(node_id, index, version)`
++ `output_entrys_`: 保存所有[`Node`](#node)的所有输出项, 一个项的唯一标志是`(node_id, index, version)`
 
 ```
 class IndexedGraph {
@@ -38,7 +43,7 @@ class IndexedGraph {
   std::unordered_set<uint32_t> mutable_input_nodes_;  // Index to all mutable input nodes.
   std::vector<NodeEntry> outputs_;  // space to store the outputs entries
   std::unordered_map<const nnvm::Node*, uint32_t> node2index_;  // mapping from node to index.
-  std::vector<size_t> entry_rptr_;  // CSR pointer of node entries
+  std::vector<size_t> entry_rptr_;  // CSR(Compressed Sparse Row) pointer of node entries
   std::vector<NodeEntry> input_entries_;  // space to store input entries of each
   std::vector<uint32_t> control_deps_;  // control flow dependencies
 };
